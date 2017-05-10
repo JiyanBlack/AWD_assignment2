@@ -1,30 +1,19 @@
-# AWD Assignment 1
-# 21824073 Yan Ji
-## Introduction Page
-* A hobby based matching page, get to know the people who share the most common hobbies with you,
-* Matching people based on Hobbies(sports, egames, other games, other hobbies)
-* Matching people based on hobbies use K-Nearest-Neighbors alogorithm or KdTree to find the near N-dimensional points.
+# AWD Assignment 2
 
-## Register Page
-* Enter name, password, description
-* Validate rules:
-  * user name consists of 5-20 letters and numbers. 
-  * password can only be 8-20 numbers and letters.
-  * SQL injection prevention will be on the server-side.
-* One submit button.
+Technology stack: Bulma
 
-## Login Page
-* Enter name, password
-* Validate rules:
-  * user name consists of 5-20 letters and numbers. 
-  * password can only be 8-20 numbers and letters.
-  * SQL injection prevention will be on the server-side.
-* One submit button.
-  
-## Matching Page
-* Selecting the hobbies through a tree structure
-* Two buttons: confirm and reset.
-* Result will display in the matching page as a list when the server side is done.
+1. Change matchpage to user center/profile page
+ * who viewed you
+ * change matches
+2. Realtime chat page
+3. match quality realtime representation
+4. user authentication
+5. state perseve: cookies
+5. a page explaining the matching algorithm
+6. at least one page describing the architecture you used, the design choices you made and any difficulties encountered along the way.
+7. one page describing the test and validation strategy and results.
+8. one page giving short bios of yourself, and any references used.
+
 
 ## Reference
 1. https://www.w3schools.com/css/css3_gradients.asp*/
