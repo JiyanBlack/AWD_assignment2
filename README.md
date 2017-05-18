@@ -1,6 +1,5 @@
 # AWD Assignment 2
 
-Technology stack: Bulma
 
 1. Change matchpage to user center/profile page
  * who viewed you
@@ -14,6 +13,30 @@ Technology stack: Bulma
 7. one page describing the test and validation strategy and results.
 8. one page giving short bios of yourself, and any references used.
 
+### hash function: https://github.com/h2non/jshashes
+### css library: bulma
+
+# database
+* user profile database: userid, interests list, description, who_viewed_me(userid list)
+
+* authentication: userid, username, hashed_password
+当用户登陆时候，发送cookie: userid=userid; hashvalue = hash(userid+username), 用户端保存。   
+当每次登陆的时候，用户发送cookie到服务器端, "userid=zhangle;hashvalue=daf%$%#defghy5t4"，服务器端查到userid, username，做hash(userid+username) ==? hashvalue
+
+* message: fromid, toid, content, time
+
+* friends: userid, *username* del, friends(userid list)
+
+# Todo:
+JiYan:
+  * user center webpage
+  * match quality result page 
+  * other user's profile page (username, )
+Zhangle:
+  * add friend page
+  * chatting page
+  * authentication
+ 
 
 ## Reference
 1. https://www.w3schools.com/css/css3_gradients.asp*/
