@@ -1,28 +1,32 @@
-const path = require('path');
-const webpack = require('webpack');
+var debug = process.env.NODE_ENV !== "production";
+var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
-    context: path.resolve(__dirname, 'server/static/assets/js'),
+    context: path.join(__dirname, "server", "static"),
+    devtool: debug ? "inline-sourcemap" : false,
     entry: {
-        app: ['./main.js'],
-    },
-    output: {
-        path: path.resolve(__dirname, 'server/static/assets/js'),
-        filename: './bundle.js',
-    },
-    devServer: {
-        contentBase: path.resolve(__dirname, './server/static/'),
+        profile: "./assets/js/jsx/profile.jsx",
+        profileMatch: './assets/js/jsx/ProfileMatch.jsx'
     },
     module: {
-        rules: [{
-            test: /\.js$/,
-            exclude: [/node_modules/],
-            use: [{
-                loader: 'babel-loader',
-                options: { presets: ['es2015'] }
-            }],
-        }, ],
+        loaders: [{
+            test: /\.jsx?$/,
+            exclude: /(node_modules|bower_components)/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['react', 'es2015'],
+                plugins: ['react-html-attrs', 'transform-class-properties'],
+            }
+        }]
     },
+    output: {
+        path: path.join(__dirname, "server", "static"),
+        filename: "./assets/js/[name].min.js"
+    },
+    plugins: debug ? [] : [
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+    ],
 };
-
-console.log("Webpack is running on port: 8080")

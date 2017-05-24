@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Yan Ji 21824073">
+    <meta name="description" content="Find the people who share the common hobbies with you">
+    <title>Your Profile - Hobbies Matching</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.slim.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <nav class="nav has-shadow">
+        <div class="container">
+            <div class="nav-left">
+                <a class="nav-item" href="userprofile.html">User Center</a>
+                <a class="nav-item is-tab is-active" href="userprofile.html">Profile</a>
+                <a class="nav-item is-tab" href="userprofileMatch.html">Start Matching</a>
+                <a class="nav-item is-tab">Log out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tile is-ancestor">
+        <div class="tile is-vertical is-9">
+            <div class="tile">
+                <div class="tile is-parent is-vertical is-3">
+                    <article class="tile is-child notification is-primary">
+                        <p class="title">Hi!</p>
+                        <p class="subtitle" id="username">{username}</p>
+                        <p>friends list</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child notification is-info">
+                        <p class="title">Your Match Quality</p>
+                        <p class="subtitle">With an image</p>
+                        <figure class="image is-4by3">
+                            <img src="http://bulma.io/images/placeholders/640x480.png">
+                        </figure>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child notification is-success">
+                <div class="content">
+                    <p class="title">Who viewed you:</p>
+                    <div class="content">
+                        <!-- Content -->
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+</body>
