@@ -5,7 +5,31 @@ export default class LeftPanel extends React.Component {
         super();
     }
 
+    render() {
+        var name = "Your";
+        if (this.props.name) name = this.props.name;
+        return (
+            <div class="tile is-parent">
+                <article class="tile is-child notification is-info">
+                    <p class="title">{name} Hobbies</p>
+                    <p class="subtitle">Built by Highcharts</p>
+                    <div id="chart" style={{ width: '640px', height: '480px', margin: '0 auto' }}></div>
+                </article>
+
+            </div>
+        );
+    }
+
     componentDidMount() {
+        this.updateGraph();
+    }
+
+    componentDidUpdate() {
+        this.updateGraph();
+    }
+
+
+    updateGraph() {
         var cate = ["Football/Soccer", "Basketball", "Cricket", "Tennis", "Athletics", "Rugby", "Formula 1", "Boxing", "Ice Hockey", "Volleyball", "Golf", "Baseball", "American Football", "MMA", "MotoGP", "Field Hockey", "Cycling", "Badminton", "Swimming", "Snooker", "Table Tennis", "Gymnastics", "Handball", "Wrestling", "Skiing", "Horse", "Racing", "Bicycling", "Hiking", "Boating", "Running", "Dancing", "Party games", "Tabletop Games", "Arcade Games", "Computer Games", "Console Games", "Handheld games", "Mobile games", "Multiplayer games", "Singleplayer games", "Fiction", "Comedy", "Drama", "Horror", "Non-fiction", "Realistic fiction", "Romance novel", "Satire", "Tragedy", "Tragicomedy", "Fantasy", "Watching TV", "Fishing", "Computer Technology", "Music", "Hunting", "Shopping", "Traveling", "Socializing", "Church Activities", "Crafts", "Cooking", "Camping", "Cars", "Animal Care", "Bowling", "Painting", "Theater", "Billiards", "Beach"];
         var userid = this.props.userid;
         var socket = io();
@@ -165,19 +189,7 @@ export default class LeftPanel extends React.Component {
                 }
             });
         });
-
-
     }
 
-    render() {
-        return (
-            <div class="tile is-parent">
-                <article class="tile is-child notification is-info">
-                    <p class="title">Your Match Quality</p>
-                    <p class="subtitle">Built by Highcharts</p>
-                    <div id="chart" style={{ width: '640px', height: '480px', margin: '0 auto' }}></div>
-                </article>
-            </div>
-        );
-    }
+
 }

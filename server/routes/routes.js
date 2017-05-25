@@ -5,13 +5,20 @@ var profile = require('../controllers/profile.js');
 
 
 function registerIO(io) {
-    io.on('connection', function(socket) {
+    io.on('connection', function (socket) {
         console.log('user connected!');
 
-        socket.on('getInterests', function(userid) {
+        socket.on('getProfile', function (userid) {
+            profile.getProfile(userid, (result) => {
+                console.log('Receive "getProfile" for ' + userid);
+                socket.emit('receiveProfile', JSON.stringify(result));
+            });
+        });
+
+        socket.on('getInterests', function (userid) {
             try {
                 profile.getInterests(userid, (result) => {
-                    console.log('getInterests for ' + userid);
+                    console.log('Receive "getInterests" for ' + userid);
                     socket.emit('receiveInterests', JSON.stringify(result));
                 });
             } catch (e) {
@@ -19,7 +26,7 @@ function registerIO(io) {
             }
         });
 
-        socket.on('updateMatch', function(matchResult) {
+        socket.on('updateMatch', function (matchResult) {
             try {
                 profile.updateMatch(matchResult, (result) => {
                     socket.emit('updateMatchSuccess', JSON.stringify(result));

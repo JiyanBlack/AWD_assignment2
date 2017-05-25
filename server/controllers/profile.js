@@ -1,50 +1,68 @@
 require('../models/db.js');
 const mongoose = require('mongoose');
-var userprofile = mongoose.model('Userprofile');
-// userid: { type: String, require: true, unique: true },
-// interests: { type: [Number], required: true },
-// description: { type: String, require: false },
-// viewed: { type: [String], require: false },
-// topMatch: { type: [String], require: false },
+var Userprofile = mongoose.model('Userprofile');
+var User = mongoose.model('User');
 
-module.exports.getInterests = function(userid, cb) {
-    userprofile.findOne({ userid: userid }, { interests: 1 }).exec(function(err, result) {
+// cache user name and interests to speed response 
+var userprofileCache = {};
+var userNameCache = {};
+
+
+module.exports.getInterests = function (userid, cb) {
+    Userprofile.findOne({ userid: userid }, { interests: 1 }).exec(function (err, result) {
         if (err) return console.log(err);
-        else {
-            cb(result.interests);
-        }
-    });
+        cb(result.interests);
+    }).catch((e) => console.log(e));
 }
 
-module.exports.updateMatch = function(matchResult, cb) {
+module.exports.getProfile = function (userid, cb) {
+    try {
+        console.log(userid);
+        var result = {
+            name: '',
+            userid: userid,
+            friends: [],
+            viewed: []
+        };
+        User.findOne({ userID: userid }).exec((err, userinfo) => {
+            if (err) console.log(err);
+            console.log(userinfo);
+            for (let i = 0; i < userinfo.friends.length; i++) {
+                let friendId = userinfo.friends[i];
+                result.friends.push({ name: userNameCache[friendId], userid: userinfo.friends[i] });
+            }
+            result.name = userNameCache[userid];
+            Userprofile.findOne({ userid: userid }, {}).exec((err, viewed) => {
+                result.viewed = viewed.viewed.map((oneid) => { return { userid: oneid, name: userNameCache[oneid] } });
+                console.log(result);
+                cb(result);
+            }).catch((e) => console.log(e));
+        }).catch((e) => console.log(e));
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
+module.exports.updateMatch = function (matchResult, cb) {
     var jsonResult = JSON.parse(matchResult);
     var userid = jsonResult.userid;
     var interests = jsonResult.interests;
     userid = userid.toString();
-    var userResult = {};
     var markResult = [];
-    var query = userprofile.find({}, { 'userid': 1, 'interests': 1 });
-    var promise = query.exec();
+    userprofileCache[userid] = interests;
+    for (let id in userprofileCache) {
+        if (id != userid)
+            markResult.push({ userid: id, rankMark: calculateMark(interests, userprofileCache[id]) });
+    }
 
-    promise.then(function(docs) {
-        for (let id in docs) {
-            let content = docs[id];
-            userResult[id] = content.interests;
-        }
-        for (let id in userResult) {
-            markResult.push({ userid: id, rankMark: calculateMark(interests, userResult[id]) });
-        }
-        delete userResult;
-        // sort the result
-        markResult.sort((a, b) => { return b.rankMark - a.rankMark });
-        var result = markResult.slice(0, 10);
-        userprofile.update({ userid: userid }, { topMatch: result, interests: interests }, function(err, rank) {
-            if (err) return console.log(err);
-            console.log('update match for ' + userid);
-            cb(result);
-        });
+    markResult.sort((a, b) => { return b.rankMark - a.rankMark });
+    var result = markResult.slice(0, 10);
+    Userprofile.update({ userid: userid }, { topMatch: result, interests: interests }, function (err, rank) {
+        if (err) return console.log(err);
+        console.log('update match for ' + userid);
+        cb(result);
     });
-
 }
 
 function calculateMark(arr1, arr2) {
@@ -59,3 +77,22 @@ function calculateMark(arr1, arr2) {
     }
     return mark;
 }
+
+
+Userprofile.find({}, { 'userid': 1, 'interests': 1 }).exec().then(function (docs) {
+    for (let id in docs) {
+        let content = docs[id];
+        userprofileCache[id] = content.interests;
+    }
+    console.log('cache interests array...');
+});
+
+User.find({}, { 'userID': 1, 'userName': 1 }).exec((err, docs) => {
+    if (err) console.log(err);
+    for (let id in docs) {
+        let content = docs[id];
+        userNameCache[id] = content.userName;
+    }
+    // console.log(userNameCache);
+    console.log('cache user collection...');
+});

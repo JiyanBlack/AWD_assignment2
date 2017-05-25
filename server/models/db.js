@@ -16,7 +16,7 @@ conn.on('disconnected', () => {
     console.log('Mongoose disconnected.');
 });
 
-var shutDown = function(msg, cb) {
+var shutDown = function (msg, cb) {
     mongoose.connection.close(() => {
         console.log("Mongoose disconnected through " + msg);
         cb();
@@ -40,3 +40,4 @@ process.on('SIGTERM', () => {
 });
 
 require('./profile.js');
+require('./userModel.js');
