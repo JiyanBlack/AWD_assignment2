@@ -9,13 +9,12 @@ export default class LeftPanel extends React.Component {
         var name = "Your";
         if (this.props.name) name = this.props.name;
         return (
-            <div class="tile is-parent">
-                <article class="tile is-child notification is-info">
+            <div class="tile is-child">
+                <article class="notification is-info">
                     <p class="title">{name} Hobbies</p>
                     <p class="subtitle">Built by Highcharts</p>
-                    <div id="chart" style={{ width: '640px', height: '480px', margin: '0 auto' }}></div>
+                    <div id="chart" style={{ maxHeight: '480px', margin: '0 auto' }}></div>
                 </article>
-
             </div>
         );
     }
@@ -37,7 +36,7 @@ export default class LeftPanel extends React.Component {
         console.log('Emit ' + 'getInterests' + ' for user ' + userid);
         socket.on('receiveInterests', (res) => {
             var interests = JSON.parse(res);
-            console.log(interests);
+            // console.log(interests);
             var colors = Highcharts.getOptions().colors,
                 categories = ['Sports', 'Games', 'Reading/Writing', 'Others'],
                 data = [{

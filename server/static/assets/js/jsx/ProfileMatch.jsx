@@ -2,23 +2,47 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import HeaderProfile from './HeaderProfile.jsx';
 import MiddlePanel from './MiddlePanel.jsx';
+import MatchQuality from './MatchQuality.jsx';
+import MatchLists from './MatchLists.jsx';
 
 class Layout extends React.Component {
     constructor() {
         super();
+        var initialId = '1';
         this.state = {
             'isForm': true,
-            'userid': '1',
+            'userid': initialId,
+            'topMatch': [],
         }
     }
 
+    personAction(username, userid) {
+        var socket = io();
+        socket.emit('addOneFriend', JSON.stringify({ from: this.state.userid, target: userid }));
+    }
+
     generateFormOrState() {
+        console.log(this.state);
         if (this.state.isForm)
             return (
-                <form class="match-form" id="matching-form"  ></form>
+                <div>
+                    <form class="match-form" id="matching-form"></form>
+                </div>
             )
         else return (
-            <MiddlePanel userid={this.state.userid} />
+            <div class="tile is-ancestor">
+                <div class="tile is-parent is-vertical is-9">
+                    <MatchQuality userid={this.state.userid} />
+                    <MiddlePanel userid={this.state.userid} />
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child notification is-primary">
+                        <p class="title">Your Top 10 Match</p>
+                        <p class="subtitle">Click to add friends</p>
+                        <MatchLists people={this.state.topMatch} action={this.personAction.bind(this)} />
+                    </article>
+                </div>
+            </div>
         )
     }
 
@@ -30,14 +54,16 @@ class Layout extends React.Component {
                 <HeaderProfile active={'match'} />
                 <div class="row">
                     <div class="container">
+                        {this.generateFormOrState()}
+                    </div>
+                    <div class="btn-container">
+                        <a class="button is-large is-primary" id="match" type="submit" name="submit" value="Match">Submit</a>
+                        <span> </span><span> </span>
+                        <a class="button is-warning is-large" id="reset" type="reset" name="reset" value="Reset" >Reset</a>
 
-                        <div class="btn-container">
-                            {this.generateFormOrState()}
-                            <input class="btn btn-default" id="match" type="submit" name="submit" value="Match" />
-                            <input class="btn btn-reset" id="reset" type="reset" name="reset" value="Reset" />
-                        </div>
                     </div>
                 </div>
+
             </div >
         )
     }
@@ -47,9 +73,10 @@ class Layout extends React.Component {
         const socket = io();
 
         socket.on('updateMatchSuccess', (topMatch) => {
-            console.log(topMatch);
+            topMatch = JSON.parse(topMatch);
             this.setState({
-                'isForm': false
+                'isForm': false,
+                'topMatch': topMatch
             });
         });
 

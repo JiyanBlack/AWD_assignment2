@@ -4,11 +4,12 @@ import HeaderProfile from './HeaderProfile.jsx';
 import LeftPanel from './LeftPanel.jsx';
 import RightPanel from './RightPanel.jsx';
 import MiddlePanel from './MiddlePanel.jsx';
+import MatchQuality from './MatchQuality.jsx';
 
 class Layout extends React.Component {
     constructor() {
         super();
-        var initialId = '233';
+        var initialId = '458';
         this.state = {
             name: "",
             userid: initialId,
@@ -29,8 +30,9 @@ class Layout extends React.Component {
                 name: userinfo.name,
                 userid: userinfo.userid,
                 friends: userinfo.friends,
-                viewed: userinfo.viewed
+                viewed: userinfo.viewed,
             });
+            console.log(userinfo);
         });
     }
 
@@ -41,11 +43,14 @@ class Layout extends React.Component {
         })
     }
 
-    changeMiddlePanel(name, userid) {
+    viewFriend(name, userid) {
         this.setState({
             displayid: userid,
             chartName: name
         });
+        var socket = io();
+        socket.emit('addOneView', JSON.stringify({ userid: this.state.userid, target: userid }));
+
     }
 
     render() {
@@ -54,13 +59,13 @@ class Layout extends React.Component {
             <div style={{ 'height': '100%' }}>
                 <HeaderProfile resetMiddlePanel={this.resetMiddlePanel.bind(this)} />
                 <div class="tile is-ancestor">
-                    <div class="tile is-vertical is-9">
+                    <div class="tile is-vertical">
                         <div class="tile">
-                            <LeftPanel changeMiddlePanel={this.changeMiddlePanel.bind(this)} friends={this.state.friends} name={this.state.name} />
+                            <LeftPanel action={this.viewFriend.bind(this)} friends={this.state.friends} name={this.state.name} />
                             <MiddlePanel userid={this.state.displayid} name={this.state.chartName} />
                         </div>
                     </div>
-                    <RightPanel />
+                    <RightPanel people={this.state.viewed} userid={this.state.userid} />
                 </div>
             </div>
         )
