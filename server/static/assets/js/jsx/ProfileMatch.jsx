@@ -4,7 +4,7 @@ import HeaderProfile from './HeaderProfile.jsx';
 import MiddlePanel from './MiddlePanel.jsx';
 import MatchQuality from './MatchQuality.jsx';
 import MatchLists from './MatchLists.jsx';
-
+import io from 'socket.io-client';
 class Layout extends React.Component {
     constructor() {
         super();

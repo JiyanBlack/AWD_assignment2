@@ -3,23 +3,23 @@ import ReactDOM from "react-dom";
 import MessageWindow from "./MessageWindow.js";
 import Input from "./Input.js";
 import SocketController from "./SocketController";
-import Chat from "./css/chatWindow.css";
+import Chat from "../stylesheets/chatWindow.css";
 import FriendWindow from "./FriendWindow.js";
-import AddFriend from "./AddFriend.js";
+
 //import {Link} from "react-router";
 
-export default class ChatWindow extends React.Component{
-	
+export default class ChatWindow extends React.Component {
 
-	render(){
-		
+
+	render() {
+
 		return (
 			<div id={Chat.chat}>
-		    <SocketController/>
-			<MessageWindow/>
-			<FriendWindow/>
-			<Input/>
+				<SocketController />
+				<MessageWindow />
+				<FriendWindow />
+				<Input />
 			</div>
-			);
+		);
 	}
 }

@@ -8,7 +8,8 @@ module.exports = {
     entry: {
         profile: "./assets/js/jsx/profile.jsx",
         profileMatch: './assets/js/jsx/ProfileMatch.jsx',
-        login: './assets/js/login.js'
+        login: './assets/js/login.js',
+        client: './assets/js/client.js'
     },
     module: {
         loaders: [{
@@ -19,7 +20,19 @@ module.exports = {
                 presets: ['react', 'es2015'],
                 plugins: ['react-html-attrs', 'transform-class-properties'],
             }
-        }]
+        },
+        {
+            test: /\.css$/,
+            loader: 'style-loader'
+        }, {
+            test: /\.css$/,
+            loader: 'css-loader',
+            query: {
+                modules: true,
+                localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+        }
+        ]
     },
     output: {
         path: path.join(__dirname, "server", "static"),

@@ -18,11 +18,9 @@ function unexpectedError(socket, msg) {
   socket.emit("error", msg);
 }
 
-
 const clientMap = {};
 
 module.exports = function (io, sessionMiddleware) {
-
 
   io.use(function (socket, next) {
     sessionMiddleware(socket.request, socket.request.res, next);
@@ -36,10 +34,20 @@ module.exports = function (io, sessionMiddleware) {
       return next(new Error('Not Authenticated'));
   };
 
-  io.use(socketAuth);  //authenticate all io sockets
+  // io.use(socketAuth);  //authenticate all io sockets
 
-  io.on('connection', (socket) => {
-    console.log('user connected!!!!!!!');
+  /* check friend login status*/
+  io.on('connection', function (socket) {
+    socket.emit('check!');
+    var userID = socket.request.session.userID;
+    console.log("socketid,", socket.id);
+    clientMap[userID] = socket.id;
+    // console.log("brodcasting");
+    socket.broadcast.emit("checkFriendLogIn", userID);
+    socket.emit("userInfo", {
+      userName: socket.request.session.userName,
+      userID: userID,
+    });
 
     socket.on('addOneView', (jsonstr) => {
       profile.addOneView(jsonstr, (result) => {
@@ -61,6 +69,7 @@ module.exports = function (io, sessionMiddleware) {
     });
 
     socket.on('getProfile', (userid) => {
+      console.log('1111');
       profile.getProfile(userid, (result) => {
         console.log('send "getProfile" for ' + userid);
         socket.emit('receiveProfile', JSON.stringify(result));
@@ -87,27 +96,8 @@ module.exports = function (io, sessionMiddleware) {
         console.log(e);
       }
     });
-  });
 
-  /* check friend login status*/
-  io.on('connection', function (socket) {
-    var userID = socket.request.session.userID;
-    console.log("socketid,", socket.id);
-    clientMap[userID] = socket.id;
-    console.log("brodcasting");
-    socket.broadcast.emit("checkFriendLogIn", userID);
-    socket.emit("userInfo", {
-      userName: socket.request.session.userName,
-      userID: userID,
-    });
-  });
-
-
-
-  //var socketid=socket.id;
-  io.on('connection', function (socket) {
     socket.on("loadMessagefriends", (msg) => {
-
       var userID = socket.request.session.userID;
       var query = database.checkUser({ userID: userID });
       query.exec(function (err, user) {
@@ -136,13 +126,11 @@ module.exports = function (io, sessionMiddleware) {
               //console.log("found following friends");
               //consoleLog(foundFriends);
               socket.emit("syncFriends", foundFriends);
-
             }
             else {
               socket.emit("syncFriends", []);
               //console.log("syncFriends","");
             }
-
           });
           Message.find({ toID: user.userID, beenRead: false }, function (err, messages) {
             if (err)
@@ -154,58 +142,13 @@ module.exports = function (io, sessionMiddleware) {
               socket.emit("syncMessages", []);
           });
           // socket.emit("loggedin","user logged in");
-
           // res.send(jsonfy({success:"true"+user.userName}));
-
         }
         else
           return unexpectedError(socket, "Unexpected Problem Occured");
-
       });
     });
 
-  });
-
-
-
-
-  /*io.on('connection', function(socket){
-    socket.on("addFriend", (data)=>{
-  console.log("success");})
-  });*/
-  /*
-  
-  io.on('connection', function(socket){
-    socket.on("addFriend", (data)=>{
-      //var friendID=+data;
-     //var selector= {socket:socket.id};
-      
-  
-     User.find({ userID: { $in: [data.fromID,data.friendID] } },function(err,friends)
-              {  
-  
-           if(err) return errHandle(err);
-           if(friends && friends.length==2)
-              {
-                  if (friends[0].friends.indexOf(friends[1].userID)>=0)
-                        socket.emit("fail","friend already exists");
-                  else
-                     {
-                      friends[0].friends.push(friends[1].userID);
-                      friends[1].friends.push(friends[0].userID);
-                      }
-              }
-            else
-               socket.emit("problem","fail");
-  
-       });
-  
-  });
-  
-  });*/
-
-
-  io.on('connection', function (socket) {
 
     socket.on("sendMessage", (data) => {
       var userID = socket.request.session.userID;
@@ -214,7 +157,6 @@ module.exports = function (io, sessionMiddleware) {
       data.fromID = userID;
       if (targetID) {
         // var newData=JSON.parse(JSON.stringify(data));
-
         data.beenRead = true;
         new Message(data).save((err, doc) => {
           if (err) return dataBaseError(socket);
@@ -227,26 +169,17 @@ module.exports = function (io, sessionMiddleware) {
             return unexpectedError(socket, "Unexpected Problem Occured, Message Not Sent");
             //socket.emit("error","message not sending" );
           }
-
           socket.emit("newMessage", data);
         });
-
       }
-
       else
         new Message(data).save((err, doc) => {
           if (err) return dataBaseError(socket);
           data.time = doc.time;
           socket.emit("newMessage", data);
         });
-
-
     });
 
-
-  });
-
-  io.on('connection', function (socket) {
     socket.on("refreshUnread", (friendID) => {
       var userID = socket.request.session.userID;
       Message.find({ fromID: friendID, toID: userID }, function (err, messages) {  //the sender clear the storage that sent from the friend
@@ -258,21 +191,14 @@ module.exports = function (io, sessionMiddleware) {
             message["beenRead"] = true;
             message.save((err) => { if (err) return dataBaseError(socket); })
           });
-
           // console.log("messages updated" );
-
         }
         //console.log("no message found");
       });
-    })
+    });
 
-  });
-
-
-  io.on('connection', function (socket) {
     socket.on("disconnect", () => {
       socket.emit("userlogged off", "user logged off");
-
       var userID = "";
       for (var id in clientMap) {
         if (clientMap[id] == socket.id) {
@@ -282,11 +208,7 @@ module.exports = function (io, sessionMiddleware) {
           break;
         }
       }
-
-
     });
-
   });
-
 
 }

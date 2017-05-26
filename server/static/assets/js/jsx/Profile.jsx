@@ -6,11 +6,12 @@ import RightPanel from './RightPanel.jsx';
 import MiddlePanel from './MiddlePanel.jsx';
 import MatchQuality from './MatchQuality.jsx';
 import Cookies from 'js-cookie';
+import io from 'socket.io-client';
 
 class Layout extends React.Component {
     constructor() {
         super();
-        var initialId = Cookies.get('userid');
+        var initialId = Cookies.get('userid').toString();
         this.state = {
             name: "",
             userid: initialId,
