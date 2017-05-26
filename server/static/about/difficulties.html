@@ -14,17 +14,59 @@
 <body>
     <article class="box content">
         <p class="title">Difficulties and Challenges</p>
-        <p class="subtitle">Front-end</p>
+        <p class="subtitle">Overview</p>
         <p>
             There are many difficulties that we have encountered during this project. Most of them are caused by overly ambitious planning.
-            The rentless persuit of the art-of-state technology
+            The rentless persuit of the art-of-state technology stack leads to lots of potential conundrums. However during
+            the process of the project, we also learnt a lot by taking those latest technologies.
         </p>
+        <p>
+            Another big problem is that when combining the different functionalities to the same webpage, Javascript codes becomes very
+            unfriendly for debugging. Lots of errors are omitted. To get rid of as much callbacks as possible, we are trying
+            to save ourselves by Promise.js(including the promise in Mongoose). Also mongoDB with mongoose is very unfriendly
+            for debugging, lots of error information went silent event we add console.log(err).
+        </p>
+        <p class="subtitle">Front-end</p>
+        <p>
+            The major problem of the front-end is combining React with other packages(socket, webpack...), we figured out the most comfortable
+            way of using react are: enabling webpack-dev-server, using ES6 syntax to manage packages and packing all logics
+            into JSX.
+        </p>
+        <p>
+            We also find that using this.props, this.state and this.setState is really neat when we are used to. The data flow becomes
+            easy to maintain. This enables one or two people to build websites with lots of data flowing.
+        </p>
+        <p>
+            For plotting nice graphs, we use Highcharts.js. However, Highcharts.js needs to be rendered after all dom elements are loaded.
+            React lifecycle management becomes another whole big issue.
+        </p>
+        <p>
+            React is good once you know it. But for small projects, it is probably not worth learning React because it is a whole set
+            of new tools and theories. As I said, once you know it, React becomes very powerful and fast. But it will take
+            lots of time.
+        </p>
+        <p class="subtitle">Back-end</p>
+        <p>
+            We found back-end is relatively easier. We use websocket to communicate whenever possible. All visualization data, chatting
+            messages, friends lists and viewed lists are hot-loading by websocket.
+        </p>
+        <p>
+            We are using sessions for the validation part. But we found that when applying sessions middleware for socket connections,
+            sometime the socket information cannot reach the server side. This is a problem that we have not fixed yet. This
+            is probably due to we use the session middleware as the middleware of express.js as well as websocket.io.
+        </p>
+        <p>
+            Also when it comes to the testing, React has a total different sets of testing tools. This took us lots of time to figure
+            out.
+        </p>
+        <div class="is-clearfix has-text-centered">
+            <a href="test.html" class="is-pulled-left">Previous</a>
+            <a href="../about.html">About</a>
+            <a href="aboutus.html" class="is-pulled-right">Next</a>
+        </div>
     </article>
 
-    <div class="is-clearfix">
-        <a href="" class="is-pulled-left">Previous</a>
-        <a href="" class="is-pulled-right">Next</a>
-    </div>
+
 </body>
 
 </html>

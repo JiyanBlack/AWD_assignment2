@@ -16,7 +16,7 @@
         <p class="title">Design and Architecture</p>
         <p class="subtitle">Project Design</p>
         <p>
-            Our websites have totally
+            Our websites have total 7 pages, half of them are built on React.
         </p>
         <p>
             Index page: introduction to our website.
@@ -39,24 +39,39 @@
         <p>
             Aboutus page: documentation of the website.
         </p>
+        <p>
+            Chat app: Users can chat with friends using chat app,when a friend is online, it will update in left friend list, a user
+            can click on left friend name and send messages, both send button and "enter" key press is workable for sending,
+            when a user is offline and messages are sent to him, the messages are stored in server database and it will show
+            the number of unread messages on the left panel when he logs in.
+        </p>
+        <p>
+            Authentication: When a user registers or logs in with username and password, on page javascript will first check the name
+            and password meet basic requirements, then if they are valid, it will generate a hash from username and password
+            and send to server, server store the hash for later comparison of login, server will set a session to keep userid,
+            during chating socket io will also check user session to authenticate user sending and receiving of messages.
+        </p>
         <p class="subtitle">Architecture</p>
         <p>
             We have several important architecture and decisions:
         </p>
         <p>1. We decide to user React.js as our main front-end framework.</p>
         <p>2. Websocket is responsible for all front-back end communications.</p>
-        <p>3. MongoDB and Mongoose is our database.</p>
+        <p>3. MongoDB and Mongoose is driving our database.</p>
         <p>4. Sessions are used to keep a secure communication including real-time chat.</p>
         <p>5. Babel and Webpack are responsible for pre-compile all front-end js from ES6 to more compatible ES5 style.</p>
         <p>6. Mocha, Enzyme and Chai are used for testing.</p>
         <p>7. Express is used as our server framework.</p>
         <p>8. Flux is used for manage chat information.</p>
+
+        <div class="is-clearfix  has-text-centered">
+            <a href="algorithms.html" class="is-pulled-left">Previous</a>
+            <a href="../about.html">About</a>
+            <a href="test.html" class="is-pulled-right">Next</a>
+        </div>
     </article>
 
-    <div class="is-clearfix">
-        <a href="" class="is-pulled-left">Previous</a>
-        <a href="" class="is-pulled-right">Next</a>
-    </div>
+
 </body>
 
 </html>

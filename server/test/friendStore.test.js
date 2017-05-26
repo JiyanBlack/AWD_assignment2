@@ -1,5 +1,5 @@
-import FriendStore from "../public/components/FriendStore.js";
-import dispatcher from "../public/components/dispatcher";
+import FriendStore from "../static/assets/js/FriendStore.js";
+import dispatcher from "../static/assets/js/dispatcher";
 //dispatcher.register(FriendStore.handleActions.bind(this));
 
 describe("component:FriendStore",()=>{
@@ -85,7 +85,6 @@ describe("component:FriendStore",()=>{
 		expects(wrapper,[1,true,0,true],true,1,_this);
 
 		dispatcher.dispatch(action2);
-		console.log("wrapper friends",wrapper.friends);
 		expects(wrapper,[1,true,0,false],true,2);
 		dispatcher.dispatch(action3);
 		expects(wrapper,[1,true,0,false],false,2);

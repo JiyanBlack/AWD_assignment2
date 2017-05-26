@@ -13,18 +13,81 @@
 
 <body>
     <article class="box content">
-        <p class="title">Matching Algorithm</p>
-        <p class="subtitle">Data Structure</p>
+        <p class="title">Test and Validation</p>
+        <p class="subtitle">Overview</p>
         <p>
-            When we get the user's hobbies, all entries are flattend into a 1-d array of 0s and 1s with 71 entries. Each of the 0 and
-            1 is mapping to a hobby, 1 mean user has this hobby while 0 means not.
+            The test consists of 2 parts, react component tests and static page tests
         </p>
+        <p class="subtitle">React Component Test</p>
+        <p>
+            The tools used to test react components are Enzyme ,Sinon,Expect and Proxyquire.
+        </p>
+        <p>
+            The tools for performing static page tests are mocha and chai.
+        </p>
+
+        <p>
+            Enzyme is used to mount react components. Sinon has tools like spy and stub that can monitor the component function for calling
+            events and parameters used. Proxyquire can replace the speci testing and responsfied import module of the component
+            to make it more isolated for to events as we intended. Expect is used to compare expected results with actual
+            results.
+        </p>
+        <p>
+            Totally 32 tests have been ran to test all react components in chatting function,each of which passed without any error.
+        </p>
+        <p>
+            The chatting function is designed using a flux pattern, in which emitters are used to store information,and emit changes
+            for view components to update, a dispatcher are used to diaspatch what ever events and data to emitters and update
+            the data storege of emitters, view components can show and render information like firend list and messages,
+            and can also respond to user events like sending messages and use dispatcher to update local storages.
+        </p>
+        <p>
+            So the tests are divided into 3 groups:
+        </p>
+        <p>
+            For normal view components, test uses Enzyme to mount components and can also simuate user inputs or events and check internal
+            functions called times and state change.
+        </p>
+        <p>
+            For testing dispatcher functions, we register a spy function to the register and call different dispatch functions and monitor
+            whehter the dispactched events and data are heard by the registered group.
+        </p>
+        <p class="subtitle">Static Page Test</p>
+        <p>
+            The testing of static page is done using Mocha and Chai.
+        </p>
+        <p>
+            Mocha is suitable for in page test, and chai is used to compare results.
+        </p>
+        <p>
+            Login page and register page are tested for username and password authenticaion on client side, the test shows every invalid
+            usernames or passwords are identified and responded with expected error messages.
+        </p>
+        <p>
+            command to run for all react component tests mocha --compilers js:babel-register --require ignore-styles --require ./test/helpers.js
+            --require ./test/dom.js ./test/*.js
+        </p>
+        <p>
+            Static page tests can be run by directly opening following files in /test/page_test folder registerTest.html loginTest.html
+        </p>
+        <p> Following are snapshots for both component tests and page tests
+        </p>
+        <p>
+            Component test results:
+        </p>
+        <img src="test_result_components.png" />
+        <p>
+            Paga test results:
+        </p>
+        <img src="test_result_pages.png" />
+
+        <div class="is-clearfix has-text-centered">
+            <a href="design.html" class="is-pulled-left">Previous</a>
+            <a href="../about.html">About</a>
+            <a href="difficulties.html" class="is-pulled-right">Next</a>
+        </div>
     </article>
 
-    <div class="is-clearfix">
-        <a href="" class="is-pulled-left">Previous</a>
-        <a href="" class="is-pulled-right">Next</a>
-    </div>
 </body>
 
 </html>

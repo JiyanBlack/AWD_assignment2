@@ -4,7 +4,7 @@
   "description": "agile web development assignment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-register --require ignore-styles --require ./test/helpers.js --require ./test/dom.js ./test/*.js",
     "dev": "webpack-dev-server --content-base ./server/static --inline --hot",
     "watch": "webpack --progress --colors --watch"
   },

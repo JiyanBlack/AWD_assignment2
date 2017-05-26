@@ -1,5 +1,5 @@
-import Friend from '../public/components/Friend';
-import * as MessageAction from "../public/components/MessageAction.js";
+import Friend from '../static/assets/js/Friend';
+import * as MessageAction from "../static/assets/js/MessageAction.js";
 
 describe("component:Friend",()=>{
 

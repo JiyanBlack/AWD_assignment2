@@ -1,5 +1,5 @@
-import FriendWindow from "../public/components/FriendWindow.js";
-import FriendStore from "../public/components/FriendStore.js";
+import FriendWindow from "../static/assets/js/FriendWindow.js";
+import FriendStore from "../static/assets/js/FriendStore.js";
 
 
 

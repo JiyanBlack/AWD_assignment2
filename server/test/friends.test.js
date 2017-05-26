@@ -1,6 +1,6 @@
-import Friends from '../public/components/Friends';
-import MessageStore from "../public/components/MessageStore.js";
-import FriendStore from "../public/components/FriendStore.js";
+import Friends from '../static/assets/js/Friends';
+import MessageStore from "../static/assets/js/MessageStore.js";
+import FriendStore from "../static/assets/js/FriendStore.js";
 
 describe("component:Friends",()=>{
 
@@ -67,8 +67,8 @@ describe("component:Friends",()=>{
 	));
 
 	it("should render the information stored in it's state(3 friends) and first one should be online",stest(function(){
-  	this.stub(FriendStore,"getAll",function(){return state.friends});
-  	this.stub(MessageStore,"getUnreadMessages",function(){return state.unreadMessages});
+  	this.stub(FriendStore,"getAll").callsFake(function(){return state.friends});
+  	this.stub(MessageStore,"getUnreadMessages").callsFake(function(){return state.unreadMessages});
    	   const wrapper = mount(<Friends />);
 		expect(wrapper.find("a").length
 			).toEqual(3);     // check 3 friends out rendered

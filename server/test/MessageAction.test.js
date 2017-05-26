@@ -2,7 +2,7 @@ import { Dispatcher} from "flux";
 //import proxyquire from "proxyquire";
 
 var proxyquire = require('proxyquire').noCallThru();
-//import * as MessageAction from "../public/components/MessageAction.js";
+//import * as MessageAction from "../components/MessageAction.js";
 
 
 describe("component:MessageAction",()=>{
@@ -16,7 +16,7 @@ describe("component:MessageAction",()=>{
 
     it("it should dispach the data and registered function can get the data",stest(function(){
 
-    		var MessageAction = proxyquire('../public/components/MessageAction.js', { './dispatcher': dispatcher });
+    		var MessageAction = proxyquire('../static/assets/js/MessageAction.js', { './dispatcher': dispatcher });
  			//console.log(MessageAction);
 
  			var callback=this.spy();

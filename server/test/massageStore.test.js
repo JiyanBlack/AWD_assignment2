@@ -1,5 +1,5 @@
-import MessageStore from "../public/components/MessageStore.js";
-import dispatcher from "../public/components/dispatcher";
+import MessageStore from "../static/assets/js/MessageStore.js";
+import dispatcher from "../static/assets/js/dispatcher";
 
 describe("component:MessageStore",()=>{
 	const fakeMessages=[{

@@ -1,4 +1,4 @@
-import Message from '../public/components/Message';
+import Message from '../static/assets/js/Message';
 
 describe("component:Message",()=>{
 

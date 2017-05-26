@@ -1,6 +1,6 @@
-import Input from "../public/components/Input.js";
-import * as MessageAction from "../public/components/MessageAction";
-import MessageStore from "../public/components/MessageStore.js";
+import Input from "../static/assets/js/Input.js";
+import * as MessageAction from "../static/assets/js/MessageAction";
+import MessageStore from "../static/assets/js/MessageStore.js";
 
 describe("component:Input",()=>{
 
@@ -66,7 +66,6 @@ describe("component:Input",()=>{
 
 	   wrapper.setState(someState);
 	   wrapper.find("a").simulate("click");
-	   console.log("wrapper function",wrapper.state());
 		expect(MessageAction.sendMessage.callCount    
 			).toEqual(1);
 		expect(MessageAction.sendMessage.firstCall.args[0]

@@ -1,5 +1,5 @@
-import Messages from '../public/components/Messages';
-import MessageStore from "../public/components/MessageStore.js";
+import Messages from '../static/assets/js/Messages';
+import MessageStore from "../static/assets/js/MessageStore.js";
 
 describe("component:Messages",()=>{
 	const defaultState={

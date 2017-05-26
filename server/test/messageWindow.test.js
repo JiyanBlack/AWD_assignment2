@@ -1,5 +1,5 @@
-import MessageWindow from "../public/components/MessageWindow.js";
-import MessageStore from "../public/components/MessageStore.js";
+import MessageWindow from "../static/assets/js/MessageWindow.js";
+import MessageStore from "../static/assets/js/MessageStore.js";
 
 
 
