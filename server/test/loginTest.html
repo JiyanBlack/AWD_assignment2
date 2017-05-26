@@ -2,17 +2,23 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Yan Ji 21824073">
-    <meta name="description" content="Find the people who share the common hobbies with you">
+   <link rel="stylesheet" href="../vendor/mocha.css">
     <title>Login - Hobbies Matching</title>
-    <link rel="stylesheet" href="assets/stylesheets/main.css">
+    <link rel="stylesheet" href="./assets/stylesheets/main.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400">
 </head>
 
 <body>
+     <div id="mocha"></div>
+    <script src="../vendor/mocha.js"></script>
+    <script src="../vendor/chai.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="../testUserName.js"></script>
+      <script src="../testPassWord.js"></script>
 
+    <script>
+      mocha.run();
+    </script>
     <!-- Header -->
 
     <header class="primary-header container group">
@@ -75,8 +81,8 @@
         </div>
     </footer>
 
-    <script type="text/javascript" src="assets/js/main.js"></script>
-    <script type="text/javascript" src="assets/js/smallLogin.js"></script>
+    <script type="text/javascript" src="./assets/js/main.js"></script>
+    <script type="text/javascript" src="./assets/js/smallLoginTest.js"></script>
 
 </body>
 

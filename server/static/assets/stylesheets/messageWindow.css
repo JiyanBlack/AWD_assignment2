@@ -1,0 +1,25 @@
+#box{
+		width: 30%;
+		height:70%;
+		padding: 0;
+		margin-right:18%;
+		margin-top:6%;
+		float:right;
+		
+		}
+#label{
+	font-size: 1.3rem;
+	height:15%;
+	width:100%;
+	margin:0;
+	padding:8px;
+	background-color: #F8F8F8;
+	text-align: center;
+}
+
+#messageDiv{
+	width:100%;
+	height:84%;
+	overflow: auto;
+}
+

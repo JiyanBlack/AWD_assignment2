@@ -126,4 +126,8 @@ function clearError() {
     registerDom.passwordHint.innerHTML = "";
 }
 
+window.validateUsername=validateUsername;
+window.registerDom=registerDom;
+window.validatePassword=validatePassword;
+window.clearError=clearError;
 registerRun();

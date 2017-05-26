@@ -1,0 +1,9 @@
+#box{
+		width: 30%;
+		height:70%;
+		padding: 0px;
+		margin-left:18%;
+		margin-top:6%;
+		float:left;
+		overflow: auto;
+		};

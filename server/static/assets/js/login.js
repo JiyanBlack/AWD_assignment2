@@ -1,5 +1,7 @@
+
+var Hashes = require('jshashes');
 var registerDom = {
-    "submit": document.getElementById("submit"),
+    "submit": document.getElementById("btn_submit"),
     "usernameHint": document.getElementById("username-hint"),
     "passwordHint": document.getElementById("password-hint"),
     "username": document.getElementById("username"),
@@ -7,6 +9,7 @@ var registerDom = {
     "description": document.getElementById("description"),
     "errorDiv": document.getElementById("errorDiv")
 };
+var loginForm= document.getElementById("loginForm");
 
 var validateFuncs = {
     "onlyNumberAndLetters": function onlyNumberAndLetters(input) {
@@ -21,14 +24,57 @@ var validateFuncs = {
 };
 
 function loginRun() {
+     /*************changed**************/
+    var MD5= new Hashes.MD5;
+    //var string="semp ewrer";
+   // console.log("stirng hashed",MD5.hex(string));
+
     registerDom.submit.addEventListener('click', function (event) {
         event.preventDefault();
         clearError();
         var isValidUsername = validateUsername();
         var isValidPassword = validatePassword();
         if (isValidUsername && isValidPassword) {
-            var successMsg = ["Login with username: " + registerDom.username.value + ", password: " + registerDom.password.value];
-            dispMsg(successMsg, registerDom.errorDiv);
+          /*  var successMsg = ["Login with username: " + registerDom.username.value + ", password: " + registerDom.password.value];
+            dispMsg(successMsg, registerDom.errorDiv);*/
+            var hash=MD5.hex(registerDom.username.value+registerDom.password.value);
+            //alert(registerDom.username);
+            registerDom.password.value=hash;
+           // alert(hash);
+       /* const sendData={
+            name:registerDom.
+        }*/
+         var data={name:registerDom.username.value,password:hash};
+        var sendData=JSON.stringify( data) ;
+        fetch("/user_login",
+        {  headers: {
+        'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+        credentials: 'include',
+         method: "POST",
+        redirect: 'follow',
+        body:  sendData ,
+        }).then((res)=>{
+          return  res.json().then((response)=>{
+            if (response.error)
+            {
+                var msgs=[];
+                msgs.push(response.error);
+                dispMsg(msgs, registerDom.usernameHint);
+               // registerDom.usernameHint.value=;
+                setTimeout(location.reload(),3000);
+            }
+            else
+                { 
+                    location.reload();
+                    window.location.href="http://localhost:3000/user_approved_chatApp";
+                }
+
+            })});
+            //loginForm.submit();
+        /************changed****************/
+
         }
     });
 }
@@ -50,7 +96,7 @@ function validateUsername() {
         return true;
     }
 }
-
+//window.validateUsername=validateUsername;
 function validatePassword() {
     var msgs = [];
     var password = registerDom.password.value;

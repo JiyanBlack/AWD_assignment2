@@ -1,4 +1,3 @@
-require('../models/db.js');
 const mongoose = require('mongoose');
 var Userprofile = mongoose.model('Userprofile');
 var User = mongoose.model('User');

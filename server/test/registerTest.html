@@ -2,16 +2,24 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Yan Ji 21824073">
-    <meta name="description" content="Find the people who share the common hobbies with you">
-    <title>Login - Hobbies Matching</title>
-    <link rel="stylesheet" href="assets/stylesheets/main.css">
+    <link rel="stylesheet" href="../vendor/mocha.css">
+    <title>Register - Hobbies Matching</title>
+    <link rel="stylesheet" href="./assets/stylesheets/main.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400">
 </head>
 
 <body>
+
+     <div id="mocha"></div>
+    <script src="../vendor/mocha.js"></script>
+    <script src="../vendor/chai.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="../testUserName.js"></script>
+      <script src="../testPassWord.js"></script>
+
+    <script>
+      mocha.run();
+    </script>
 
     <!-- Header -->
 
@@ -25,10 +33,10 @@
 
         <nav class="nav primary-nav">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="register.html">Register</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="matching.html">Matching</a></li>
+                <li><a href="index">Home</a></li>
+                <li><a href="register">Register</a></li>
+                <li><a href="login">Login</a></li>
+                <li><a href="matching">Matching</a></li>
             </ul>
         </nav>
 
@@ -38,23 +46,18 @@
 
     <div class="row">
         <div class="grid">
-            <form class="col-3-3" action="/user_login" method="post" id="loginForm">
-
-                <fieldset class="register-group">
+            <form class="col-3-3" action="/register_newUser" method="post" id="registerForm">
+                <fieldset class="register-group" >
                     <label>User Name:<input type="text" id="username" name="name" placeholder="User Name" required /></label>
                     <div class="col-3-3" id="username-hint"></div>
                     <label>Password<input type="password" id="password" name="password" placeholder="Password" required /></label>
                     <div class="col-3-3" id="password-hint"></div>
+                    <label>Tell us something about youself: <textarea name="description" id="description"></textarea></label>
                 </fieldset>
-
                 <div class="col-3-3" id="errorDiv"></div>
-
-                <label><input type="checkbox" name="remember" id = "stay-sign-in" /> Stay signed in </label>
-
                 <div class="btn-container">
-                    <input class="btn btn-default" type="button" id="btn_submit" name="btn_submit" value="Login" />
+                    <input class="btn btn-default" type="button" name="btn_submit" id="btn_submit" value="Submit" />
                 </div>
-
             </form>
         </div>
     </div>
@@ -75,8 +78,8 @@
         </div>
     </footer>
 
-    <script type="text/javascript" src="assets/js/main.js"></script>
-    <script type="text/javascript" src="assets/js/smallLogin.js"></script>
+    <script type="text/javascript" src="./assets/js/main.js"></script>
+    <script type="text/javascript" src="./assets/js/smallregisterTest.js"></script>
 
 </body>
 

@@ -3,6 +3,22 @@ const mongoose = require('mongoose');
 const dbURI = 'mongodb://zhanglejiyan:2333@ds149501.mlab.com:49501/hobbymatching';
 mongoose.connect(dbURI);
 
+var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+var sessionMiddleware = session(
+    {
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection,
+            touchAfter: 24 * 3600
+        }),
+        resave: false,
+        saveUninitialized: false,
+        secret: "keyboard cat",
+        cookie: { maxAge: 3600000, httpOnly: true, Path: "/" }, //session expires in one hour
+    });
+
+
+
 const conn = mongoose.connection;
 conn.on('connected', () => {
     console.log('Mongoose connected to Mlab!');
@@ -41,3 +57,5 @@ process.on('SIGTERM', () => {
 
 require('./profile.js');
 require('./userModel.js');
+
+module.exports = sessionMiddleware;

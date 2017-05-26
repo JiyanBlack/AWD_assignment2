@@ -1,5 +1,5 @@
-var Hashes = require('jshashes');
 
+var Hashes = require('jshashes');
 var registerDom = {
     "submit": document.getElementById("btn_submit"),
     "usernameHint": document.getElementById("username-hint"),
@@ -9,7 +9,10 @@ var registerDom = {
     "description": document.getElementById("description"),
     "errorDiv": document.getElementById("errorDiv")
 };
-var registerForm= document.getElementById("registerForm");
+
+
+var loginForm= document.getElementById("loginForm");
+
 var validateFuncs = {
     "onlyNumberAndLetters": function onlyNumberAndLetters(input) {
         return /^[a-z0-9]+$/i.test(input);
@@ -22,31 +25,37 @@ var validateFuncs = {
     }
 };
 
-function registerRun() {
+function loginRun() {
+     /*************changed**************/
     var MD5= new Hashes.MD5;
-    registerDom.submit.addEventListener('click', function(event) {
-        //event.preventDefault();
+    //var string="semp ewrer";
+   // console.log("stirng hashed",MD5.hex(string));
+
+    registerDom.submit.addEventListener('click', function (event) {
+        event.preventDefault();
         clearError();
         var isValidUsername = validateUsername();
         var isValidPassword = validatePassword();
         if (isValidUsername && isValidPassword) {
-            //var successMsg = ["Register successfully! " + "username: " + registerDom.username.value + ", password: " + registerDom.password.value];
-            //dispMsg(successMsg, registerDom.errorDiv);
+          /*  var successMsg = ["Login with username: " + registerDom.username.value + ", password: " + registerDom.password.value];
+            dispMsg(successMsg, registerDom.errorDiv);*/
             var hash=MD5.hex(registerDom.username.value+registerDom.password.value);
-
+            //alert(registerDom.username);
             registerDom.password.value=hash;
-           // console.log(hash);
-           // registerForm.submit();
-
-       var data={name:registerDom.username.value,password:hash};
+           // alert(hash);
+       /* const sendData={
+            name:registerDom.
+        }*/
+         var data={name:registerDom.username.value,password:hash};
         var sendData=JSON.stringify( data) ;
-        fetch("/register_newUser",
+        fetch("/user_login",
         {  headers: {
         'Accept': 'application/json',
             'Content-Type': 'application/json',
             },
         credentials: 'include',
          method: "POST",
+        redirect: 'follow',
         body:  sendData ,
         }).then((res)=>{
           return  res.json().then((response)=>{
@@ -56,7 +65,7 @@ function registerRun() {
                 msgs.push(response.error);
                 dispMsg(msgs, registerDom.usernameHint);
                // registerDom.usernameHint.value=;
-                setTimeout(()=>window.location.href="http://localhost:3000/login",3000);
+                setTimeout(location.reload(),3000);
             }
             else
                 { 
@@ -65,9 +74,10 @@ function registerRun() {
                 }
 
             })});
+            //loginForm.submit();
+        /************changed****************/
+
         }
-        else
-            console.log("don't submit");
     });
 }
 
@@ -88,7 +98,7 @@ function validateUsername() {
         return true;
     }
 }
-
+//window.validateUsername=validateUsername;
 function validatePassword() {
     var msgs = [];
     var password = registerDom.password.value;
@@ -110,6 +120,7 @@ function validatePassword() {
     } else {
         return true;
     }
+
 }
 
 function dispMsg(msgs, errorDiv) {
@@ -126,4 +137,9 @@ function clearError() {
     registerDom.passwordHint.innerHTML = "";
 }
 
-registerRun();
+window.validateUsername=validateUsername;
+window.registerDom=registerDom;
+window.validatePassword=validatePassword;
+window.clearError=clearError;
+
+loginRun();
