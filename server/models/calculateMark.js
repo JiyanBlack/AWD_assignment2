@@ -9,5 +9,6 @@ module.exports = function calculateMark(arr1, arr2) {
         } else mark -= 1;
 
     }
+    if (mark < 0) return 0;
     return mark;
 }

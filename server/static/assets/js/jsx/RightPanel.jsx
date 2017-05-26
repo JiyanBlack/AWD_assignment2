@@ -15,7 +15,7 @@ export default class LeftPanel extends React.Component {
                     <div class="content">
                         <p class="title">Who viewed you</p>
                         <p class="subtitle">Click to add friends</p>
-                        <div class="content">
+                        <div class="content" style={{ height: '400px', 'overflowY': 'scroll' }}>
                             <MatchLists people={this.props.people} action={this.personAction.bind(this)} />
                         </div>
                     </div>

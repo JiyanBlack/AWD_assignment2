@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 var profile = require('../controllers/profile.js');
 
-
-
 function registerIO(io) {
     io.on('connection', (socket) => {
         console.log('user connected!');

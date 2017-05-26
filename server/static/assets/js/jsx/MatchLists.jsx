@@ -5,7 +5,7 @@ export default class MatchList extends React.Component {
     render() {
         return (
             <aside class="menu">
-                <div class="menu-label" style={{ minHeight: '100px', maxHeight: '400px', 'overflowY': 'scroll' }}>
+                <div class="menu-label" >
                     {this.props.people.map((obj) => { return (<OneFriend key={obj.userid} action={this.props.action} name={obj.name} userid={obj.userid} />) })}
                 </div>
             </aside>

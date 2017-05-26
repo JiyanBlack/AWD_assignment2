@@ -73,6 +73,7 @@ module.exports.getProfile = function (userid, cb) {
     User.findOne({ userID: userid }).exec((err, userinfo) => {
         if (err) console.log(err);
         // console.log(userinfo);
+        if (!userinfo || !userinfo.friends) return;
         for (let i = 0; i < userinfo.friends.length; i++) {
             let friendId = userinfo.friends[i];
             result.friends.push({ name: userNameCache[friendId], userid: userinfo.friends[i] });
