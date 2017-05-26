@@ -1,5 +1,5 @@
 var Hashes = require('jshashes');
-
+var Cookies = require('js-cookie');
 var registerDom = {
     "submit": document.getElementById("btn_submit"),
     "usernameHint": document.getElementById("username-hint"),
@@ -9,7 +9,7 @@ var registerDom = {
     "description": document.getElementById("description"),
     "errorDiv": document.getElementById("errorDiv")
 };
-var registerForm= document.getElementById("registerForm");
+var registerForm = document.getElementById("registerForm");
 var validateFuncs = {
     "onlyNumberAndLetters": function onlyNumberAndLetters(input) {
         return /^[a-z0-9]+$/i.test(input);
@@ -23,8 +23,8 @@ var validateFuncs = {
 };
 
 function registerRun() {
-    var MD5= new Hashes.MD5;
-    registerDom.submit.addEventListener('click', function(event) {
+    var MD5 = new Hashes.MD5;
+    registerDom.submit.addEventListener('click', function (event) {
         //event.preventDefault();
         clearError();
         var isValidUsername = validateUsername();
@@ -32,39 +32,37 @@ function registerRun() {
         if (isValidUsername && isValidPassword) {
             //var successMsg = ["Register successfully! " + "username: " + registerDom.username.value + ", password: " + registerDom.password.value];
             //dispMsg(successMsg, registerDom.errorDiv);
-            var hash=MD5.hex(registerDom.username.value+registerDom.password.value);
+            var hash = MD5.hex(registerDom.username.value + registerDom.password.value);
 
-            registerDom.password.value=hash;
-           // console.log(hash);
-           // registerForm.submit();
+            registerDom.password.value = hash;
+            // console.log(hash);
+            // registerForm.submit();
 
-       var data={name:registerDom.username.value,password:hash};
-        var sendData=JSON.stringify( data) ;
-        fetch("/register_newUser",
-        {  headers: {
-        'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            },
-        credentials: 'include',
-         method: "POST",
-        body:  sendData ,
-        }).then((res)=>{
-          return  res.json().then((response)=>{
-            if (response.error)
-            {
-                var msgs=[];
-                msgs.push(response.error);
-                dispMsg(msgs, registerDom.usernameHint);
-               // registerDom.usernameHint.value=;
-                setTimeout(()=>window.location.href="http://localhost:3000/login",3000);
-            }
-            else
-                { 
-                    location.reload();
-                    window.location.href="http://localhost:3000/user_approved_chatApp";
-                }
-
-            })});
+            var data = { name: registerDom.username.value, password: hash, description: registerDom.description.value };
+            var sendData = JSON.stringify(data);
+            fetch("/register_newUser",
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    method: "POST",
+                    body: sendData,
+                }).then((res) => {
+                    return res.json().then((response) => {
+                        if (response.error) {
+                            var msgs = [];
+                            msgs.push(response.error);
+                            dispMsg(msgs, registerDom.usernameHint);
+                            // registerDom.usernameHint.value=;
+                        }
+                        else {
+                            Cookies.set('userid', response.userid);
+                            setTimeout(() => window.location.href = "userprofile.html", 2000);
+                        }
+                    })
+                });
         }
         else
             console.log("don't submit");

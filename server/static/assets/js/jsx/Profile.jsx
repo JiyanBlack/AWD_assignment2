@@ -38,6 +38,14 @@ class Layout extends React.Component {
         });
     }
 
+    addFriend(username, userid) {
+        var friends = this.state.friends;
+        friends.unshift({ name: username, userid: userid });
+        this.setState({
+            friends: friends
+        });
+    }
+
     resetMiddlePanel() {
         this.setState({
             displayid: this.state.userid,
@@ -52,7 +60,6 @@ class Layout extends React.Component {
         });
         var socket = io();
         socket.emit('addOneView', JSON.stringify({ userid: this.state.userid, target: userid }));
-
     }
 
     render() {
@@ -67,7 +74,7 @@ class Layout extends React.Component {
                             <MiddlePanel userid={this.state.displayid} name={this.state.chartName} />
                         </div>
                     </div>
-                    <RightPanel people={this.state.viewed} userid={this.state.userid} />
+                    <RightPanel people={this.state.viewed} userid={this.state.userid} addFriend={this.addFriend.bind(this)} />
                 </div>
             </div>
         )

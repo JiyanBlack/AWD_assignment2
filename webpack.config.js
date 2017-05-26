@@ -9,7 +9,8 @@ module.exports = {
         profile: "./assets/js/jsx/profile.jsx",
         profileMatch: './assets/js/jsx/ProfileMatch.jsx',
         login: './assets/js/login.js',
-        client: './assets/js/client.js'
+        client: './assets/js/client.js',
+        register: './assets/js/register.js'
     },
     module: {
         loaders: [{

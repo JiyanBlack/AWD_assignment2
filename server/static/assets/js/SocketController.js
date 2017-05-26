@@ -3,21 +3,24 @@ import io from "socket.io-client";
 import * as MessageAction from "./MessageAction";
 import dispatcher from "./dispatcher.js";
 import errorCss from '../stylesheets/error.css';
+import Cookies from 'js-cookie';
 
 export default class SocketController extends React.Component {
 
 	constructor() {
 		super();
-		this.socket = io('http://localhost:3000/');
+		this.socket = io();
 		this.state = {
 			error: "Data base Error ,please try again Later",
 			show: false,
+			userid: Cookies.get('userid').toString()
 		}
 
 	}
 	initialize(data) {
 		MessageAction.storeUserInfo(data);
-		this.socket.emit("loadMessagefriends");
+		console.log(this.state.userid);
+		this.socket.emit("loadMessagefriends", this.state.userid);
 	}
 
 	handleActions(action) {
@@ -26,13 +29,12 @@ export default class SocketController extends React.Component {
 		switch (action.type) {
 			case "sendMessage":
 				//this.errorLogIn("123");
-				this.socket.emit("sendMessage", action.data);
-
+				this.socket.emit("sendMessage", { data: action.data, userid: this.state.userid });
 				break;
 
 			case "switchFriend":
 				if (action.data.clearUnread) {
-					this.socket.emit("refreshUnread", action.data.friendID);
+					this.socket.emit("refreshUnread", { data: action.data.friendID, userid: this.state.userid });
 					console.log("request to clear");
 				}
 				break;
@@ -58,17 +60,15 @@ export default class SocketController extends React.Component {
 		dispatcher.register(this.handleActions.bind(this));
 	}
 	componentDidMount() {
+		console.log(this.state);
 		const socket = this.socket;
-		socket.on("connect", () => { socket.emit('login') });
+		socket.emit('initing', this.state.userid);
 		socket.on("userInfo", this.initialize.bind(this));
-		socket.on("checkFriendLogIn", MessageAction.checkFriendLogIn);
-		socket.on("checkFriendOffLine", MessageAction.checkFriendOffLine);
-
-		socket.on("syncMessages", MessageAction.syncMessages);
-		socket.on("newMessage", MessageAction.createMessage);
-
-		socket.on("syncFriends", MessageAction.syncFriends);
-
+		socket.on("checkFriendLogIn", MessageAction.checkFriendLogIn.bind(this));
+		socket.on("checkFriendOffLine", MessageAction.checkFriendOffLine.bind(this));
+		socket.on("syncMessages", MessageAction.syncMessages.bind(this));
+		socket.on("newMessage", MessageAction.createMessage.bind(this));
+		socket.on("syncFriends", MessageAction.syncFriends.bind(this));
 		socket.on("error", this.errorHandle.bind(this));
 
 	}

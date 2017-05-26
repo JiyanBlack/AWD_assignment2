@@ -12,6 +12,7 @@ var registerDom = {
 };
 var loginForm = document.getElementById("loginForm");
 
+
 var validateFuncs = {
     "onlyNumberAndLetters": function onlyNumberAndLetters(input) {
         return /^[a-z0-9]+$/i.test(input);
@@ -70,7 +71,7 @@ function loginRun() {
                             location.reload();
                             Cookies.set('userid', response.userid);
                             // console.log(response);
-                            window.location.href = "http://localhost:3000/userprofile.html";
+                            window.location.href = "userprofile.html";
                         }
 
                     })

@@ -1,5 +1,6 @@
 import React from 'react';
 import MatchLists from './MatchLists.jsx';
+import io from 'socket.io-client';
 
 export default class LeftPanel extends React.Component {
 
@@ -16,7 +17,7 @@ export default class LeftPanel extends React.Component {
                         <p class="title">Who viewed you</p>
                         <p class="subtitle">Click to add friends</p>
                         <div class="content" style={{ height: '400px', 'overflowY': 'scroll' }}>
-                            <MatchLists people={this.props.people} action={this.personAction.bind(this)} />
+                            <MatchLists people={this.props.people} action={this.personAction.bind(this)} addFriend={this.props.addFriend} />
                         </div>
                     </div>
                 </article>

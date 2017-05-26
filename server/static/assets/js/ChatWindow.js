@@ -5,6 +5,7 @@ import Input from "./Input.js";
 import SocketController from "./SocketController";
 import Chat from "../stylesheets/chatWindow.css";
 import FriendWindow from "./FriendWindow.js";
+import HeaderProfile from "./jsx/HeaderProfile.jsx";
 
 //import {Link} from "react-router";
 
@@ -15,6 +16,7 @@ export default class ChatWindow extends React.Component {
 
 		return (
 			<div id={Chat.chat}>
+				<HeaderProfile active={'chat'} />
 				<SocketController />
 				<MessageWindow />
 				<FriendWindow />

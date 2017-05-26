@@ -6,6 +6,7 @@ var secureKey = "today is a nice day";
 var database = require("../util/dataBaseHandle.js");
 var consoleLog = require('../util/consoleLog.js');
 var User = mongoose.model('User');
+var Userprofile = mongoose.model('Userprofile');
 var Message = mongoose.model('Message');
 var path = require('path');
 var staticPath = path.join(__dirname, '../static');
@@ -36,15 +37,15 @@ module.exports = function (app) {
   }
 
 
-  app.get('/', userCheckIn, function (req, res) {
+  app.get('/', function (req, res) {
     res.sendFile(staticPath + "/index.html");
 
   });
-  app.get(/\/(index\.html)?$/, userCheckIn, function (req, res) {
+  app.get(/\/(index\.html)?$/, function (req, res) {
     res.sendFile(staticPath + "/index.html");
 
   });
-  app.get('/register(.html)?', userCheckIn, function (req, res) {
+  app.get('/register(.html)?', function (req, res) {
     res.sendFile(staticPath + "/register.html");
   });
 
@@ -54,11 +55,9 @@ module.exports = function (app) {
     res.send("session cleared");
   });
 
-  app.get('/login(.html)?', userCheckIn, function (req, res) {
-
+  app.get('/login(.html)?', function (req, res) {
     res.sendFile(staticPath + "/login.html");
     //consoleLog(req.session);
-
   });
   app.post('/user_login', function (req, res) {
     var userPass = req.body.password;
@@ -95,18 +94,21 @@ module.exports = function (app) {
 
       else {
 
+        new Userprofile({
+          userid: userID,
+          description: req.body.description,
+          interests: Array(71).fill(0)
+        }).save((err, doc) => { if (err) return console.log(err) });
+
         new User({
           userName: req.body.name,
           password: req.body.password,
           userID: userID,
           friends: [],
-        }).save((err, doc) => { if (err) return dataBaseErrorHandle(res) });
-
+        }).save((err, doc) => { if (err) return console.log(err) });
         req.session.userID = userID;
         req.session.userName = req.body.name;
-        res.send({ "success": "registered" });
-
-
+        res.send({ success: "registered", userid: userID });
         // console.log("registered password",req.body.password);
       }
     });

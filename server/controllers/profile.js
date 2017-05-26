@@ -14,7 +14,7 @@ module.exports.addOneView = function (jsonstr, cb) {
     if (!userid || !target) return;
     Userprofile.findOne({ userid: target }, { viewed: 1 }).exec((err, result) => {
         if (err) console.log(err);
-        if (!result.viewed) return;
+        if (!result || !result.viewed) return;
 
         var viewedSet = new Set(result.viewed);
         viewedSet.add(userid);
@@ -22,6 +22,7 @@ module.exports.addOneView = function (jsonstr, cb) {
 
         Userprofile.update({ userid: target }, { viewed: viewed }).exec((err, result) => {
             if (err) console.log(err);
+            if (!result) return;
             cb(result);
         }).catch((e) => console.log(e));
 
@@ -35,11 +36,13 @@ module.exports.addOneFriend = function (jsonstr, cb) {
     if (!userid || !target) return;
     User.findOne({ userID: userid }, { friends: 1 }).exec((err, result) => {
         if (err) console.log(err);
+        if (!result) return;
         var friendSet = new Set(result.friends);
         friendSet.add(target);
         var friendList = Array.from(friendSet);
         User.update({ userID: userid }, { friends: friendList }).exec((err, result) => {
             if (err) console.log(err);
+            if (!result) return;
             cb(result);
         }).catch((e) => console.log(e));
     }).catch((e) => console.log(e));
@@ -49,6 +52,7 @@ module.exports.getTopMatch = function (userid, cb) {
     if (!userid) return;
     Userprofile.findOne({ userid: userid }, { topMatch: 1 }).exec((err, result) => {
         if (err) return console.log(err);
+        if (!result) return;
         cb(generateTopMatchList(result.topMatch));
     });
 }
@@ -57,6 +61,7 @@ module.exports.getInterests = function (userid, cb) {
     if (!userid) return;
     Userprofile.findOne({ userid: userid }, { interests: 1 }).exec((err, result) => {
         if (err) return console.log(err);
+        if (!result) return;
         cb(result.interests);
     }).catch((e) => console.log(e));
 }
@@ -79,6 +84,7 @@ module.exports.getProfile = function (userid, cb) {
         }
         result.name = userNameCache[userid];
         Userprofile.findOne({ userid: userid }, {}).exec((err, viewed) => {
+            if (!viewed) return;
             result.viewed = viewed.viewed.map((oneid) => { return { userid: oneid, name: userNameCache[oneid] } });
             result.viewed = result.viewed.reverse().slice(0, 10);
             // console.log(result);

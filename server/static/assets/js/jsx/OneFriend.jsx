@@ -12,7 +12,8 @@ export default class OneFriend extends React.Component {
         this.setState({
             clicked: true
         });
-        this.props.action(this.props.name, this.props.userid);
+        if (this.props.action) this.props.action(this.props.name, this.props.userid);
+        if (this.props.addFriend) this.props.addFriend(this.props.name, this.props.userid);
         setTimeout(() => {
             this.setState({
                 clicked: false

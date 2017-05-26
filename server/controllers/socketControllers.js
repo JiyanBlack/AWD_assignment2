@@ -22,31 +22,22 @@ const clientMap = {};
 
 module.exports = function (io, sessionMiddleware) {
 
-  io.use(function (socket, next) {
-    sessionMiddleware(socket.request, socket.request.res, next);
-  });
-
-  var socketAuth = function socketAuth(socket, next) {
-    //return next();
-    if (socket.request.session.userID)
-      return next();
-    else
-      return next(new Error('Not Authenticated'));
-  };
-
-  // io.use(socketAuth);  //authenticate all io sockets
-
   /* check friend login status*/
   io.on('connection', function (socket) {
-    socket.emit('check!');
-    var userID = socket.request.session.userID;
-    console.log("socketid,", socket.id);
-    clientMap[userID] = socket.id;
-    // console.log("brodcasting");
-    socket.broadcast.emit("checkFriendLogIn", userID);
-    socket.emit("userInfo", {
-      userName: socket.request.session.userName,
-      userID: userID,
+
+    socket.on('initing', (userID) => {
+      console.log('initing chat window for ' + userID);
+      User.findOne({ userID: userID }, { userName: 1 }).exec((err, result) => {
+        if (err) return console.log(err);
+        console.log("socketid,", socket.id);
+        clientMap[userID] = socket.id;
+        console.log("brodcasting");
+        socket.broadcast.emit("checkFriendLogIn", userID);
+        socket.emit("userInfo", {
+          userName: result.userName,
+          userID: userID,
+        });
+      });
     });
 
     socket.on('addOneView', (jsonstr) => {
@@ -97,8 +88,8 @@ module.exports = function (io, sessionMiddleware) {
       }
     });
 
-    socket.on("loadMessagefriends", (msg) => {
-      var userID = socket.request.session.userID;
+    socket.on("loadMessagefriends", (userID) => {
+      console.log('loadMessageFriends');
       var query = database.checkUser({ userID: userID });
       query.exec(function (err, user) {
         if (err)
@@ -150,8 +141,9 @@ module.exports = function (io, sessionMiddleware) {
     });
 
 
-    socket.on("sendMessage", (data) => {
-      var userID = socket.request.session.userID;
+    socket.on("sendMessage", (obj) => {
+      var userID = obj.userid;
+      var data = obj.data;
       //console.log("prepare to send message");
       var targetID = clientMap[data.toID];
       data.fromID = userID;
@@ -180,8 +172,9 @@ module.exports = function (io, sessionMiddleware) {
         });
     });
 
-    socket.on("refreshUnread", (friendID) => {
-      var userID = socket.request.session.userID;
+    socket.on("refreshUnread", (obj) => {
+      var friendID = obj.data;
+      var userID = obj.userid;
       Message.find({ fromID: friendID, toID: userID }, function (err, messages) {  //the sender clear the storage that sent from the friend
         if (err)
           return dataBaseError(socket);
