@@ -5,11 +5,12 @@ import LeftPanel from './LeftPanel.jsx';
 import RightPanel from './RightPanel.jsx';
 import MiddlePanel from './MiddlePanel.jsx';
 import MatchQuality from './MatchQuality.jsx';
+import Cookies from 'js-cookie';
 
 class Layout extends React.Component {
     constructor() {
         super();
-        var initialId = '458';
+        var initialId = Cookies.get('userid');
         this.state = {
             name: "",
             userid: initialId,

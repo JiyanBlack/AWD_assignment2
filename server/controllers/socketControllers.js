@@ -4,7 +4,7 @@ var User = mongoose.model('User');
 var Message = mongoose.model('Message');
 var database = require("../util/dataBaseHandle.js");
 var consoleLog = require('../util/consoleLog.js');
-var User = require("../util/dataBaseHandle.js").user;
+
 var profile = require('./profile.js');
 
 function jsonfy(obj) {
@@ -39,7 +39,7 @@ module.exports = function (io, sessionMiddleware) {
   io.use(socketAuth);  //authenticate all io sockets
 
   io.on('connection', (socket) => {
-    console.log('user connected!');
+    console.log('user connected!!!!!!!');
 
     socket.on('addOneView', (jsonstr) => {
       profile.addOneView(jsonstr, (result) => {

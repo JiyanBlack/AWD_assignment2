@@ -1,4 +1,4 @@
-require('../models/db.js');
+
 var Hashes = require('jshashes');
 var MD5 = new Hashes.MD5;
 var mongoose = require('mongoose');
@@ -7,7 +7,11 @@ var database = require("../util/dataBaseHandle.js");
 var consoleLog = require('../util/consoleLog.js');
 var User = mongoose.model('User');
 var Message = mongoose.model('Message');
+var path = require('path');
+var staticPath = path.join(__dirname, '../static');
+
 module.exports = function (app) {
+
 
   var userAuth = function (req, res, next) {
 
@@ -33,15 +37,15 @@ module.exports = function (app) {
 
 
   app.get('/', userCheckIn, function (req, res) {
-    res.sendFile(__dirname + "../static/index.html");
+    res.sendFile(staticPath + "/index.html");
 
   });
   app.get(/\/(index\.html)?$/, userCheckIn, function (req, res) {
-    res.sendFile(__dirname + "../static/index.html");
+    res.sendFile(staticPath + "/index.html");
 
   });
   app.get('/register(.html)?', userCheckIn, function (req, res) {
-    res.sendFile(__dirname + "../static/register.html");
+    res.sendFile(staticPath + "/register.html");
   });
 
   /*function used for development needs*/
@@ -52,7 +56,7 @@ module.exports = function (app) {
 
   app.get('/login(.html)?', userCheckIn, function (req, res) {
 
-    res.sendFile(__dirname + "/public/static/login.html");
+    res.sendFile(staticPath + "/login.html");
     //consoleLog(req.session);
 
   });
@@ -66,7 +70,7 @@ module.exports = function (app) {
       if (user) {
         req.session.userID = user.userID;
         req.session.userName = user.userName;  //may be need to change
-        res.send({ "success": "login" });
+        res.send({ success: "login", userid: user.userID });
         //console.log("logged in successful");
       }
       else
@@ -109,29 +113,18 @@ module.exports = function (app) {
 
   });
 
-
   app.get('/user_approved_chatApp', userAuth, function (req, res) {
-    res.sendFile(__dirname + "/public/static/chatPage.html");
-
+    res.sendFile(staticPath + "/chatPage.html");
   });
 
-
-
   app.use(function (req, res) {
-
     res.status(404);
     res.send('404 error');
   });
-
 
   app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500);
     res.send('500 server error');
   });
-
-
-
-
-
 }

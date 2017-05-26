@@ -11,9 +11,9 @@ app.use(sessionMiddleware);
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-require("./routes/routers.js")(app);
 require("./controllers/socketControllers.js")(io, sessionMiddleware);
+require("./routes/routers.js")(app);
+
 
 http.listen(3000, function () {
     console.log('Start on port 3000...');

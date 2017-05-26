@@ -7,7 +7,8 @@ module.exports = {
     devtool: debug ? "inline-sourcemap" : false,
     entry: {
         profile: "./assets/js/jsx/profile.jsx",
-        profileMatch: './assets/js/jsx/ProfileMatch.jsx'
+        profileMatch: './assets/js/jsx/ProfileMatch.jsx',
+        login: './assets/js/login.js'
     },
     module: {
         loaders: [{
