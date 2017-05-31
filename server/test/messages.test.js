@@ -50,8 +50,8 @@ it("renders the updated messages without problem",stest(function(){
 
   expect( wrapper.text()).toMatch(fackMessages[0].content); //time and content match
     expect( wrapper.text()).toMatch(fackMessages[1].content);
-   expect( wrapper.text()).toMatch("16:40:20");
-    expect( wrapper.text()).toMatch("17:40:20");
+   expect( wrapper.text()).toMatch("0:40:20");
+    expect( wrapper.text()).toMatch("1:40:20");
 
 	}));
 

@@ -4,7 +4,7 @@
   "description": "agile web development assignment",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register --require ignore-styles --require ./test/helpers.js --require ./test/dom.js ./test/*.js",
+    "test": "mocha --compilers js:babel-register --require ignore-styles --require ./server/test/helpers.js --require ./server/test/dom.js ./server/test/*.js",
     "dev": "webpack-dev-server --content-base ./server/static --inline --hot",
     "watch": "webpack --progress --colors --watch"
   },
@@ -30,6 +30,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-react-html-attrs": "^2.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",

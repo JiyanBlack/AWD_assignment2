@@ -25,7 +25,7 @@ render(){
 			</div>
 			<div id={messageCss.separater}>
 					<span id={messageCss.time} >
-						{parseInt(this.props.time.slice(11,13))+8+this.props.time.slice(13,19)}
+						{(parseInt(this.props.time.slice(11,13))+8)%24+this.props.time.slice(13,19)}
 					</span>
 				</div>
 		</div>
@@ -49,7 +49,7 @@ render(){
 			</div>
 			<div id={messageCss.separater}>
 					<span id={messageCss.time} >
-						{this.props.time.slice(11,19)}
+						{(parseInt(this.props.time.slice(11,13))+8)%24+this.props.time.slice(13,19)}
 					</span>
  						
 			</div>
