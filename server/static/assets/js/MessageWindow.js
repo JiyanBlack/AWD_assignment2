@@ -12,9 +12,10 @@ export default class MessageWindow extends React.Component {
 
 	}
 	componentWillMount() {
-		MessageStore.on("switchFriend", (data) => this.setState({
+
+		MessageStore.on("switchFriend", (data) => {this.setState({
 			friendName: data.friendName
-		}));
+		}) });
 		console.log("mystate" + this.state);
 
 	}

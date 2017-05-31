@@ -6,7 +6,7 @@ import * as MessageAction from "./MessageAction";
 class MessageStore extends EventEmitter {
 	constructor() {
 		super();
-		this.currentFriendID = 0;
+		this.currentFriendID = -1;
 		this.currentFriendName = "";
 		//	this.store={};
 		this.messages = [];   //message store from to msg time stamp
@@ -97,6 +97,7 @@ class MessageStore extends EventEmitter {
 			toID: this.currentFriendID,
 			friendName: this.currentFriendName,
 		});
+
 		if (data.clearUnread)
 			this.initialUnread[data.friendID] = 0;
 
