@@ -1,6 +1,7 @@
 require('./db.js');
 const mongoose = require('mongoose');
 var userprofile = mongoose.model('Userprofile');
+var User = mongoose.model('User');
 var calculateMark = require('./calculateMark.js');
 function getRandomArray() {
     var threshold = (Math.random() + 1) * 0.1;
@@ -91,4 +92,18 @@ function generateRandomMatch(userid, interests) {
         });
     });
 }
-updateRank()
+function removeExtraUsers() {
+    User.find({}, { userID: 1 }).exec((err, result) => {
+        for (let i = 0; i < result.length; i++) {
+            let doc = result[i];
+            // console.log(doc);
+            if (Number(doc.userID).toString() == "NaN") {
+                console.log("remove: " + doc.userID);
+                User.remove({ userID: doc.userID }, (err) => console.log(err));
+                userprofile.remove({ userid: doc.userID }, (err) => console.log(err));
+            }
+        }
+    });
+}
+
+removeExtraUsers();

@@ -34,16 +34,30 @@ module.exports.addOneFriend = function (jsonstr, cb) {
     var userid = obj.from;
     var target = obj.target;
     if (!userid || !target) return;
+
     User.findOne({ userID: userid }, { friends: 1 }).exec((err, result) => {
         if (err) console.log(err);
         if (!result) return;
-        var friendSet = new Set(result.friends);
+        let friendSet = new Set(result.friends);
         friendSet.add(target);
-        var friendList = Array.from(friendSet);
+        let friendList = Array.from(friendSet);
         User.update({ userID: userid }, { friends: friendList }).exec((err, result) => {
             if (err) console.log(err);
-            if (!result) return;
-            cb(result);
+            console.log("Add " + target + " for " + userid);
+
+            User.findOne({ userID: target }, { friends: 1 }).exec((err, result2) => {
+
+                if (err) console.log(err);
+                if (!result2 || !result2.friends) return console.log("Cannot find result for " + target);;
+                let friendSet = new Set(result2.friends);
+                friendSet.add(userid);
+                let friendList = Array.from(friendSet);
+                User.update({ userID: target }, { friends: friendList }).exec((err, result) => {
+                    if (err) console.log(err);
+                    if (!result) return;
+                    console.log("Add " + userid + " for " + target);
+                }).catch((e) => console.log(e));
+            });
         }).catch((e) => console.log(e));
     }).catch((e) => console.log(e));
 }
@@ -136,11 +150,15 @@ Userprofile.find({}, { 'userid': 1, 'interests': 1 }).exec().then(function (docs
     console.log('cache interests array...');
 });
 
+module.exports.addUserCache = function addUserCache(userid, username) {
+    userNameCache[userid] = username;
+}
+
 User.find({}, { 'userID': 1, 'userName': 1 }).exec((err, docs) => {
     if (err) console.log(err);
-    for (let id in docs) {
-        let content = docs[id];
-        userNameCache[id] = content.userName;
+    for (let i = 0; i < docs.length; i++) {
+        let curDoc = docs[i];
+        userNameCache[curDoc.userID] = curDoc.userName;
     }
     // console.log(userNameCache);
     console.log('cache user collection...');

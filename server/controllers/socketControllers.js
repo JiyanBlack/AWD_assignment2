@@ -47,6 +47,7 @@ module.exports = function (io, sessionMiddleware) {
     });
 
     socket.on('addOneFriend', (jsonstr) => {
+      console.log('add friend: ' + jsonstr);
       profile.addOneFriend(jsonstr, (result) => {
         console.log('add friend: ' + jsonstr);
       });
@@ -60,7 +61,6 @@ module.exports = function (io, sessionMiddleware) {
     });
 
     socket.on('getProfile', (userid) => {
-      console.log('1111');
       profile.getProfile(userid, (result) => {
         console.log('send "getProfile" for ' + userid);
         socket.emit('receiveProfile', JSON.stringify(result));

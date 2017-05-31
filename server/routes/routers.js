@@ -10,7 +10,7 @@ var Userprofile = mongoose.model('Userprofile');
 var Message = mongoose.model('Message');
 var path = require('path');
 var staticPath = path.join(__dirname, '../static');
-
+var profile = require('../controllers/profile.js');
 module.exports = function (app) {
 
 
@@ -93,13 +93,12 @@ module.exports = function (app) {
         userErrorHandle(res, "User has been registered before, please login directly!");
 
       else {
-
         new Userprofile({
           userid: userID,
           description: req.body.description,
           interests: Array(71).fill(0)
         }).save((err, doc) => { if (err) return console.log(err) });
-
+        profile.addUserCache(userID, req.body.name);
         new User({
           userName: req.body.name,
           password: req.body.password,
